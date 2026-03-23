@@ -1,8 +1,12 @@
 #include <Arduino.h>
+
+#include "ir.h"
+#include "motors.h"
+
 void setup() {
-// write your initialization code here
+    init_motors();
 }
 
 void loop() {
-// write your code here
+    handle_ir();
 }
