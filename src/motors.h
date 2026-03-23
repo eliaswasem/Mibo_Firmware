@@ -24,6 +24,7 @@ void drive_right();
 void drive_backwards();
 void drive_left();
 void stop_motors();
+void set_motor_speed(int speed);
 
 
 #endif //ROBO_FIRMWARE_MOTORS_H
