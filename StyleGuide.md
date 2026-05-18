@@ -1,23 +1,24 @@
-## Style Guide
+# Style Guide
 
-# File names:
+## File names:
     lowercase_snake_case (e.g., main.cpp)
 
-# Class names:
+## Class names:
     PascalCase (e.g., class MotorController)
 
-# Pin names:
+## Pin names:
     PIN_ prefix with UPPERCASE (e.g., PIN_STATUS_LED)
+
 
 # Variable names:
     camelCase (e.g., currentSpeed)
 
-# Funtion names:
+## Funtion names:
     snkae_case (e.g., motor_controller)
 
-## Example:
+# Example:
 
-# Header:
+## Header:
 
 ```cpp
 //#ifndef MOTOR_CONTROLLER_H
@@ -39,7 +40,7 @@ public:
 #endif // MOTOR_CONTROLLER_H
 ```
 
-# File
+## File
 ```cpp
 #include "motor_controller.h"
 #include <iostream>
