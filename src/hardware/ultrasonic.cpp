@@ -9,6 +9,21 @@
 void Ultrasonic::init() {
     pinMode(PIN_US_TRIG_FRONT, OUTPUT);
     pinMode(PIN_US_ECHO_FRONT, INPUT);
+
+    pinMode(PIN_US_TRIG_BACK, OUTPUT);
+    pinMode(PIN_US_ECHO_BACK, INPUT);
+
+    pinMode(PIN_US_TRIG_RIGHT, OUTPUT);
+    pinMode(PIN_US_ECHO_RIGHT, INPUT);
+
+    pinMode(PIN_US_TRIG_LEFT, OUTPUT);
+    pinMode(PIN_US_ECHO_LEFT, INPUT);
+
+    pinMode(PIN_US_TRIG_FRONT_DOWN, OUTPUT);
+    pinMode(PIN_US_ECHO_FRONT_DOWN, INPUT);
+
+    pinMode(PIN_US_TRIG_BACK_DOWN, OUTPUT);
+    pinMode(PIN_US_ECHO_BACK_DOWN, INPUT);
 }
 
 
@@ -28,4 +43,3 @@ float Ultrasonic::getDistance(const UltrasonicSensorID id) {
     }
     return static_cast<float>(duration) * 0.0343f / 2.0f;
 }
-
