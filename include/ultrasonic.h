@@ -12,9 +12,11 @@ struct UltrasonicSensor {
 
 enum UltrasonicSensorID {
     FRONT,
+    BACK,
     LEFT,
     RIGHT,
-    BACK,
+    FRONT_DOWN,
+    BACK_DOWN,
     SENSOR_COUNT
 };
 
@@ -36,7 +38,9 @@ public:
         {PIN_US_TRIG_FRONT, PIN_US_ECHO_FRONT},
         {PIN_US_TRIG_LEFT,  PIN_US_ECHO_LEFT},
         {PIN_US_TRIG_RIGHT, PIN_US_ECHO_RIGHT},
-        {PIN_US_TRIG_BACK,  PIN_US_ECHO_BACK}
+        {PIN_US_TRIG_BACK,  PIN_US_ECHO_BACK},
+        {PIN_US_TRIG_FRONT_DOWN, PIN_US_ECHO_FRONT_DOWN},
+        {PIN_US_ECHO_BACK_DOWN, PIN_US_ECHO_BACK_DOWN}
     };
 
     static void init();
