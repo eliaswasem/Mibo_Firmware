@@ -2,7 +2,7 @@
 // Created by catgod on 19.05.26.
 //
 
-#include "BMP280.h"
+#include "bmp_280.h"
 #include <Adafruit_BMP280.h>
 
 static Adafruit_BMP280 bmp;
