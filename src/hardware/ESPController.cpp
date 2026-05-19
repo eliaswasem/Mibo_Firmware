@@ -6,23 +6,23 @@
 #include <ArduinoJson.h>
 
 void ESPController::begin() {
-    Serial.begin(115200);
-    while (!Serial) {
+    Serial8.begin(115200);
+    while (!Serial8.available()) {
         continue;
     }
 }
 
 void ESPController::update() {
-    if (Serial.available() > 0) {
+    if (Serial8.available() > 0) {
         StaticJsonDocument<256> doc;
 
         // Read JSON
-        DeserializationError error = deserializeJson(doc, Serial);
+        DeserializationError error = deserializeJson(doc, Serial8);
 
         // Clear bufferon error
         if (error) {
-            while (Serial.available() > 0) {
-                Serial.read();
+            while (Serial8.available() > 0) {
+                Serial8.read();
             }
             return;
         }
@@ -38,4 +38,8 @@ void ESPController::update() {
             //handleCoordinates(lat, lon);
         }
     }
+}
+
+void ESPController::send(const char* data) {
+    Serial8.println(data);
 }

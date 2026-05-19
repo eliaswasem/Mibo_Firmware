@@ -12,6 +12,7 @@ class ESPController {
 public:
     void begin();
     void update();
+    void send(const char* data);
 
 };
 
