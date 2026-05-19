@@ -2,4 +2,6 @@
 
     GPS: TX 0 RX 1 Teensy: TX 1 RX 0
 
-    BMP280: SDA 18 SCL 19 Teensy: SDA1 18 SCL1 19
+    BMP280: SDA 18 SCL 19 Teensy: SDA1 18 SCL1 19 I²C-Adress (0x76)
+    
+    QMC5883P: SDA 18 SCL 19 Teensy: SDA1 18 SCL1 19 ,I²C-Adress (0x2C)
