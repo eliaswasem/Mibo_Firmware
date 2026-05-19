@@ -5,6 +5,19 @@
 
 #include <cstdint>
 
+struct UltrasonicSensor {
+    int trigPin;
+    int echoPin;
+};
+
+enum UltrasonicSensorID {
+    FRONT,
+    LEFT,
+    RIGHT,
+    BACK,
+    SENSOR_COUNT
+};
+
 class Ultrasonic {
     static constexpr uint8_t PIN_US_TRIG_FRONT = 1;
     static constexpr uint8_t PIN_US_ECHO_FRONT = 2;
@@ -19,6 +32,13 @@ class Ultrasonic {
     static constexpr uint8_t PIN_US_TRIG_BACK_DOWN = 11;
     static constexpr uint8_t PIN_US_ECHO_BACK_DOWN = 12;
 public:
+    static constexpr UltrasonicSensor sensors[SENSOR_COUNT] = {
+        {PIN_US_TRIG_FRONT, PIN_US_ECHO_FRONT},
+        {PIN_US_TRIG_LEFT,  PIN_US_ECHO_LEFT},
+        {PIN_US_TRIG_RIGHT, PIN_US_ECHO_RIGHT},
+        {PIN_US_TRIG_BACK,  PIN_US_ECHO_BACK}
+    };
+
     static void init();
-    static float getDistance(uint8_t trigPin, uint8_t echoPin);
+    static float getDistance(UltrasonicSensorID id);
 };

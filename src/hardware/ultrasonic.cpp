@@ -11,7 +11,10 @@ void Ultrasonic::init() {
     pinMode(PIN_US_ECHO_FRONT, INPUT);
 }
 
-float Ultrasonic::getDistance(uint8_t trigPin, uint8_t echoPin) {
+
+float Ultrasonic::getDistance(const UltrasonicSensorID id) {
+    const auto&[trigPin, echoPin] = sensors[id];
+
     digitalWrite(trigPin, LOW);
     delayMicroseconds(2);
     digitalWrite(trigPin, HIGH);
