@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <Wire.h>
 
+#include "esp_controller.h"
 #include "ir.h"
 #include "motors.h"
 #include "gps.h"
@@ -12,6 +13,7 @@ void setup() {
     GPS::begin();
     IR::init();
     Ultrasonic::init();
+    ESPController::begin();
 }
 
 void loop() {

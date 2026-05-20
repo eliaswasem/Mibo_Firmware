@@ -7,14 +7,7 @@
 #include <Arduino.h>
 
 class ESPController {
-    static constexpr uint8_t BUFFER_SIZE = 128;
-
 public:
     static void begin();
-
-    static void processCommand(const char *json);
-
-    static void update();
-    static void send(const char* data);
-
+    static void write(const uint8_t *data, size_t size);
 };
