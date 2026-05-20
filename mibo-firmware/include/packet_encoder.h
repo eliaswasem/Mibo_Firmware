@@ -7,10 +7,14 @@
 #include <cstddef>
 
 class PacketEncoder {
-private:
-    static uint8_t m_sendBuffer[258];
+    public:
+        static constexpr uint8_t PROTOCOL_START = 0xAA;
+        static constexpr size_t HEADER_SIZE = 3;       // START (1B) + LEN (1B) + CMD (1B)
+        static constexpr size_t MAX_PAYLOAD_SIZE = 255;
+        static constexpr size_t BUFFER_SIZE = HEADER_SIZE + MAX_PAYLOAD_SIZE; // 258 Bytes total
 
-public:
-    static size_t encode(Packet cmd, const void* payloadData = nullptr, size_t payloadSize = 0);
-    static const uint8_t* getBuffer();
+        // Encodes the packet and returns the pointer directly to the buffer
+        static const uint8_t* encode(Packet cmd, const void* payloadData, size_t payloadSize);
+    private:
+        uint8_t m_buffer[BUFFER_SIZE];static thread_local uint8_t m_sendBuffer[BUFFER_SIZE];
 };
