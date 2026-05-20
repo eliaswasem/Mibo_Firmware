@@ -19,4 +19,5 @@ void setup() {
 void loop() {
     IR::handle();
     GPS::update();
+    ESPController::update();
 }
