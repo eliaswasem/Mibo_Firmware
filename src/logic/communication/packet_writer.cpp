@@ -3,8 +3,7 @@
 //
 
 #include "packet_writer.h"
-#include "esp_controller.h" // Deine Hardware-Klasse
-#include <Arduino.h>        // Für Serial8
+#include "esp_controller.h"
 
 void PacketWriter::write_packet(const uint8_t* buffer) {
     if (buffer != nullptr && buffer[0] == 0xAA) {

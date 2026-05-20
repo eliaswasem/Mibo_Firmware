@@ -3,6 +3,12 @@
 //
 
 #include "packet_handler.h"
+#include "app_controller.h"
+
+uint8_t PacketHandler::m_payloadBuffer[256] = {0};
+PacketHandler::RxState PacketHandler::m_rxState = PacketHandler::RxState::WAIT_START;
+uint8_t PacketHandler::m_bytesToRead = 0;
+uint8_t PacketHandler::m_bytesRead = 0;
 
 void PacketHandler::parseByte(uint8_t byte) {
     switch (m_rxState) {
@@ -28,10 +34,10 @@ void PacketHandler::parseByte(uint8_t byte) {
             if (m_bytesRead == m_bytesToRead) {
                 RxPacket packet;
                 packet.cmd = static_cast<Packet>(m_payloadBuffer[0]);
-                packet.data = &m_payloadBuffer[1];      // Data starts after the CMD-Byte
-                packet.dataLen = m_bytesToRead - 1;     // length without cmd byte
+                packet.data = &m_payloadBuffer[1];
+                packet.dataLen = m_bytesToRead - 1;
 
-                onPacketReceived(packet);
+                AppController::onPacketReceived(packet);
 
                 m_rxState = RxState::WAIT_START;
             }

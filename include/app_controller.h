@@ -6,6 +6,6 @@
 #include "packet_handler.h"
 
 class AppController : public PacketHandler {
-protected:
-    void onPacketReceived(const RxPacket& packet) override;
+    public:
+        static void onPacketReceived(const RxPacket& packet);
 };

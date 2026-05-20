@@ -4,27 +4,21 @@
 
 #pragma once
 #include "protocol.h"
-#include <cstddef>
 
 class PacketHandler {
-private:
     enum class RxState {
         WAIT_START,
         READ_LEN,
         READ_PAYLOAD
     };
 
-    uint8_t m_payloadBuffer[256]; // storage for CMD + DATA
-    RxState m_rxState = RxState::WAIT_START;
-    uint8_t m_bytesToRead = 0;
-    uint8_t m_bytesRead = 0;
-
-protected:
-    virtual void onPacketReceived(const RxPacket& packet) = 0;
+    static uint8_t m_payloadBuffer[256];
+    static RxState m_rxState;
+    static uint8_t m_bytesToRead;
+    static uint8_t m_bytesRead;
 
 public:
-    PacketHandler() = default;
-    virtual ~PacketHandler() = default;
+    PacketHandler() = delete;
 
-    void parseByte(uint8_t byte);
+    static void parseByte(uint8_t byte);
 };
