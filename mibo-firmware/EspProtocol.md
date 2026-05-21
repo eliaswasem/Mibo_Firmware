@@ -104,4 +104,5 @@ AA 09 10 1F 0B 5E 30 08 05 2A 00
 
 ```cpp
 const uint8_t* packet = PacketEncoder::encode(Packet::SET_SPEED, &SpeedPayload{150}, sizeof(SpeedPayload));
+PacketWriter::write(packet)
 ```
