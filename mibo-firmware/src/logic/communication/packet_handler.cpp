@@ -23,7 +23,6 @@ void PacketHandler::parseByte(uint8_t byte) {
         case RxState::READ_LEN:
             m_bytesToRead = byte;
             m_bytesRead = 0;
-
             m_rxState = RxState::READ_CMD;
             break;
 
@@ -31,13 +30,9 @@ void PacketHandler::parseByte(uint8_t byte) {
             m_currentCmd = static_cast<Packet>(byte);
 
             if (m_bytesToRead == 0) {
-                RxPacket packet;
-                packet.cmd = m_currentCmd;
-                packet.data = nullptr;
-                packet.dataLen = 0;
+                RxPacket packet{m_currentCmd, nullptr, 0};
 
                 AppController::onPacketReceived(packet);
-
                 m_rxState = RxState::WAIT_START;
             } else {
                 m_rxState = RxState::READ_PAYLOAD;
@@ -48,13 +43,9 @@ void PacketHandler::parseByte(uint8_t byte) {
             m_payloadBuffer[m_bytesRead++] = byte;
 
             if (m_bytesRead == m_bytesToRead) {
-                RxPacket packet;
-                packet.cmd = m_currentCmd;
-                packet.data = m_payloadBuffer;
-                packet.dataLen = m_bytesToRead;
+                RxPacket packet{m_currentCmd, m_payloadBuffer, m_bytesToRead};
 
                 AppController::onPacketReceived(packet);
-
                 m_rxState = RxState::WAIT_START;
             }
             break;
