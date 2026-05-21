@@ -11,7 +11,7 @@
 | Field | Size    | Description                        |
 |-------|---------|------------------------------------|
 | START | 1 byte  | Fixed sync byte (0xAA)             |
-| LEN   | 1 byte  | Total bytes after LEN (CMD + DATA) |
+| LEN   | 1 byte  | Total bytes of Payload             |
 | CMD   | 1 byte  | Command ID                         |
 | DATA  | N bytes | Payload (CMD-specific)             |
 
