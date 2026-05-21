@@ -13,9 +13,3 @@ void TeensyController::write(const std::uint8_t* data, size_t size) {
         Serial1.write(data, size);
     }
 }
-
-void TeensyController::update() {
-    if (Serial1.available()) {
-        //AppController::parseByte(Serial8.read());
-    }
-}

@@ -11,6 +11,4 @@ class TeensyController {
 public:
     static void begin();
     static void write(const uint8_t *data, size_t size);
-
-    static void update();
 };

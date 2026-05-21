@@ -1,3 +1,15 @@
 //
 // Created by elias on 20.05.26.
 //
+
+#include "esp_now_controller.h"
+#include "teensy_controller.h"
+
+void init() {
+    TeensyController::begin();
+    ESPNowController::init();
+}
+
+void loop() {
+
+}
