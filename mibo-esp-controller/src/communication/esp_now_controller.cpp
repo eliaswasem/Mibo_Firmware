@@ -50,7 +50,7 @@ void ESPNowController::init() {
     for (std::size_t i = 0; i < 6; ++i) {
         peerInfo.peer_addr[i] = ESP_MAC_ADDRESS[i];
     }
-    peerInfo.channel = 1; // Must match the active Wi-Fi channel
+    peerInfo.channel = WIFI_CHANNEL; //Set ESP_NOW channel
     peerInfo.encrypt = false;
     esp_now_add_peer(&peerInfo);
 
