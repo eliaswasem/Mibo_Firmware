@@ -4,7 +4,7 @@
 
 #pragma once
 
-class bmp_280 {
+class BMP280 {
 public:
 
     static bool init();
