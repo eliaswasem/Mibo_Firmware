@@ -11,6 +11,7 @@ void IR::init() {
     pinMode(PIN_IR_R, INPUT);
     pinMode(PIN_IR_L, INPUT);
     pinMode(PIN_IR_B, INPUT);
+    pinMode(PIN_IR_D, INPUT);
 }
 
 bool IR::handle() {
@@ -19,9 +20,15 @@ bool IR::handle() {
     const int left = digitalReadFast(PIN_IR_L);
     const int back = digitalReadFast(PIN_IR_B);
 
-    if (front || right || back || left) {
+
+
+    if ((!front ||!right || !back || !left) && !isDayAndOutside) {
         Motors::stop();
         return true;
     }
     return false;
+}
+
+bool IR::isOnGround() {
+    return digitalReadFast(PIN_IR_D);
 }

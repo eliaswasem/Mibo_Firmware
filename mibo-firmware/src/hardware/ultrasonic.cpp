@@ -18,12 +18,6 @@ void Ultrasonic::init() {
 
     pinMode(PIN_US_TRIG_LEFT, OUTPUT);
     pinMode(PIN_US_ECHO_LEFT, INPUT);
-
-    pinMode(PIN_US_TRIG_FRONT_DOWN, OUTPUT);
-    pinMode(PIN_US_ECHO_FRONT_DOWN, INPUT);
-
-    pinMode(PIN_US_TRIG_BACK_DOWN, OUTPUT);
-    pinMode(PIN_US_ECHO_BACK_DOWN, INPUT);
 }
 
 

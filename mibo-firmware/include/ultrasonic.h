@@ -15,8 +15,6 @@ enum UltrasonicSensorID {
     BACK,
     LEFT,
     RIGHT,
-    FRONT_DOWN,
-    BACK_DOWN,
     SENSOR_COUNT
 };
 
@@ -29,18 +27,12 @@ class Ultrasonic {
     static constexpr uint8_t PIN_US_ECHO_LEFT = 6;
     static constexpr uint8_t PIN_US_TRIG_RIGHT = 7;
     static constexpr uint8_t PIN_US_ECHO_RIGHT = 8;
-    static constexpr uint8_t PIN_US_TRIG_FRONT_DOWN = 0;
-    static constexpr uint8_t PIN_US_ECHO_FRONT_DOWN = 10;
-    static constexpr uint8_t PIN_US_TRIG_BACK_DOWN = 11;
-    static constexpr uint8_t PIN_US_ECHO_BACK_DOWN = 12;
 public:
     static constexpr UltrasonicSensor sensors[SENSOR_COUNT] = {
         {PIN_US_TRIG_FRONT, PIN_US_ECHO_FRONT},
         {PIN_US_TRIG_LEFT,  PIN_US_ECHO_LEFT},
         {PIN_US_TRIG_RIGHT, PIN_US_ECHO_RIGHT},
         {PIN_US_TRIG_BACK,  PIN_US_ECHO_BACK},
-        {PIN_US_TRIG_FRONT_DOWN, PIN_US_ECHO_FRONT_DOWN},
-        {PIN_US_ECHO_BACK_DOWN, PIN_US_ECHO_BACK_DOWN}
     };
 
     static void init();
