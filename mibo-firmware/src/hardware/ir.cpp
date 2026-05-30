@@ -22,7 +22,7 @@ bool IR::handle() {
 
 
 
-    if ((!front ||!right || !back || !left) && !isDayAndOutside) {
+    if ((front || right || back || left) && !isDayAndOutside) {
         Motors::stop();
         return true;
     }
