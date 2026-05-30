@@ -1,28 +1,32 @@
-//
 // Created by elias on 20.05.26.
-//
-
 #include "app_controller.h"
-
-#include "motors.h"
+#include <cstring>
 
 void AppController::onPacketReceived(const RxPacket& packet) {
+    switch (packet.cmd) {
 
-    if (packet.cmd == Packet::STOP) {
-        Motors::stop();
-    }
-
-    else if (packet.cmd == Packet::SPEED) {
-        if (packet.dataLen == sizeof(SpeedPayload)) {
-            const auto* payload = reinterpret_cast<const SpeedPayload*>(packet.data);
-            Motors::set_motor_speed(payload->speed);
+        case Packet::SPEED: {
+            if (packet.dataLen == sizeof(SpeedPayload)) {
+                SpeedPayload payload;
+                std::memcpy(&payload, packet.data, sizeof(SpeedPayload));
+            }
+            break;
         }
-    }
 
-    else if (packet.cmd == Packet::GOTO) {
-        if (packet.dataLen == sizeof(GotoPayload)) {
-            const auto* payload = reinterpret_cast<const GotoPayload*>(packet.data);
-            // Navigation::set_target(payload->lat, payload->lon);
+        case Packet::STOP: {
+            break;
         }
+
+        case Packet::GOTO: {
+            if (packet.dataLen == sizeof(GotoPayload)) {
+                GotoPayload payload;
+                // Copies bytes to a aligned memory structure to prevent architecture alignment faults
+                std::memcpy(&payload, packet.data, sizeof(GotoPayload));
+            }
+            break;
+        }
+
+        default:
+            break;
     }
 }

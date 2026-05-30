@@ -3,7 +3,7 @@
 //
 #include "esp_controller.h"
 
-#include "app_controller.h"
+#include "packet_handler.h"
 
 void ESPController::begin() {
     Serial8.begin(115200);
@@ -17,6 +17,6 @@ void ESPController::write(const uint8_t* data, size_t size) {
 
 void ESPController::update() {
     if (Serial8.available()) {
-        AppController::parseByte(Serial8.read());
+        PacketHandler::parseByte(Serial8.read());
     }
 }

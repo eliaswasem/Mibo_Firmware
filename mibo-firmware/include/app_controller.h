@@ -1,11 +1,8 @@
-//
 // Created by elias on 20.05.26.
-//
-
 #pragma once
-#include "packet_handler.h"
+#include "protocol.h"
 
-class AppController : public PacketHandler {
-    public:
-        static void onPacketReceived(const RxPacket& packet);
+class AppController {
+public:
+    static void onPacketReceived(const RxPacket& packet);
 };

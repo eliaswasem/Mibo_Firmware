@@ -1,108 +1,89 @@
-# ESP ↔ Teensy UART Protocol (Binary Framed Control Link)
+# ESP ↔ Teensy Robust UART Protocol (No-LEN Binary Control Link)
 
 ---
 
 # Packet Format
 
+```text
+[START][CMD][DATA...][CRC8]
+```
 
-[START][LEN][CMD][DATA...]
 
-
-| Field | Size    | Description                        |
-|-------|---------|------------------------------------|
-| START | 1 byte  | Fixed sync byte (0xAA)             |
-| LEN   | 1 byte  | Number of data bytes               |
-| CMD   | 1 byte  | Command ID                         |
-| DATA  | N bytes | Payload (CMD-specific)             |
+| Field | Size | Description |
+| :--- | :--- | :--- |
+| **START** | 1 Byte | Fixed synchronization preamble (`0xAA`) |
+| **CMD** | 1 Byte | Command ID (Maps directly to static payload sizes) |
+| **DATA** | N Bytes | Payload data (Strictly defined per CMD) |
+| **CRC8** | 1 Byte | Trailing Dallas/Maxim check token over `CMD` and `DATA` |
 
 ---
 
 # Core Rules
 
-- START is always `0xAA`
-- LEN is **always** `0–255`
-- LEN = number of DATA bytes
-- CMD is always 1 byte
-- DATA is strictly defined per CMD
+- `START` is always `0xAA`.
+- The transmission footprint length is implicit, derived completely from the `CMD` ID lookup.
+- `CRC8` protects the link stream against random bit flips caused by EMI.
+- Calculation window starts exactly at the `CMD` byte and covers all `DATA` fields.
 
 ---
 
 # Commands
 
 ## SPEED
+- **CMD:** `0x01`
+- **TYPE:** `uint8_t`
+- **DATA SIZE:** 1 Byte
+- **TOTAL FRAME SIZE:** 4 Bytes (`START` + `CMD` + 1B Payload + `CRC8`)
 
-CMD: 0x01
-TYPE: uint8_t
-SIZE: 1 byte
-
-
-Example:
-
-AA 01 01 7D
-
+### Example (SPEED = 125 / 0x7D)
+- **Packet:** `AA 01 7D 5B` (CRC-8 computed from: 01 7D)
 
 ---
 
 ## STOP
+- **CMD:** `0x02`
+- **TYPE:** None
+- **DATA SIZE:** 0 Bytes
+- **TOTAL FRAME SIZE:** 3 Bytes (`START` + `CMD` + `CRC8`)
 
-CMD: 0x02
-TYPE: none
-SIZE: 0 bytes
-
-
-Example:
-
-AA 00 02
-
+### Example
+- **Packet:** `AA 02 62` (CRC-8 computed from: 02)
 
 ---
 
 ## GOTO (lat, lon)
+- **CMD:** `0x10`
+- **TYPE:** `int32_t` (Latitude) + `int32_t` (Longitude)
+- **DATA SIZE:** 8 Bytes
+- **TOTAL FRAME SIZE:** 11 Bytes (`START` + `CMD` + 8B Payload + `CRC8`)
 
-CMD: 0x10
-TYPE: int32_t + int32_t
-SIZE: 8 bytes
-
-
-Example:
-
-AA 08 10 [LAT 4B] [LON 4B]
-
+### Example
+- **Packet:** `AA 10 [LAT 4B] [LON 4B] [CRC8]`
 
 ---
 
-# Example Packets
+# Receiver Logic (Deterministic State Machine)
 
-## SPEED = 125
+```text
+[WAIT_START] ──(0xAA)──> [READ_CMD] ──(Valid CMD)──> [READ_PAYLOAD] ──(Full Payload)──> [READ_CRC]
+     ▲                         │                            │                               │
+     └─────────(Invalid)───────┴───────────(Unknown CMD)────┴─────────(Done / Error)────────┘
+```
 
-AA 01 01 7D
-
-
-## STOP
-
-AA 00 02
-
-
-## GOTO(lat, lon)
-
-AA 08 10 1F 0B 5E 30 08 05 2A 00
-
+1. **WAIT_START:** Scan incoming bytes until the magic sync preamble `0xAA` is caught.
+2. **READ_CMD:** Extract the instruction identifier. Query the size lookup engine. If the command ID is unregistered (returns -1), abort and fallback to step 1.
+3. **READ_PAYLOAD:** Read the exact number of fixed payload bytes bound to the validated command ID. If the payload size requirement is 0, progress immediately to step 4.
+4. **READ_CRC:** Compare the trailing validation byte from the stream against the running computed software CRC matrix fingerprint.
+    - **Match:** Forward the uncorrupted frame payload data to the main execution controller.
+    - **Mismatch:** Quietly drop the frame to preserve control line integrity.
+5. Fallback tracking to step 1.
 
 ---
 
-# Receiver Logic (State Machine)
-
-1. Wait for `0xAA`
-2. Read `LEN`
-3. Validate `LEN` (1–MAX_FRAME_SIZE)
-4. Read `LEN` bytes into buffer
-5. Extract `CMD = buffer[0]`
-6. `DATA = buffer[1..]`
-7. Dispatch by CMD
-
-# Example Packet Sender
+# Encoder Usage
 
 ```cpp
-const uint8_t* packet = PacketEncoder::encode(Packet::SET_SPEED, &SpeedPayload{150}, sizeof(SpeedPayload));
-PacketWriter::write(packet)
+// Serializes and appends the hardware check token automatically
+const uint8_t* packet = PacketEncoder::encode(Packet::SPEED, &SpeedPayload{150}, sizeof(SpeedPayload));
+PacketWriter::write_packet(packet);
 ```
